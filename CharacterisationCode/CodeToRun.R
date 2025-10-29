@@ -19,6 +19,5 @@ cdm <- CDMConnector::cdmFromCon(con = con,
 minCellCount = 5
 
 characterisation <- TRUE
-conceptCounts <- TRUE
 
 source("RunCharacterisation.R")

@@ -112,6 +112,13 @@ if (characterisation) {
                                                                      ageGroup = ageGroup, 
                                                                      dateRange = dateRange)
   
+  # Measurement diagnostics
+  log_message("Running measurement diagnostics")
+  measurement_codes <- omopgenerics::importCodelist(here::here("measurement_codes"), type = "csv")
+  result_MeasurementUse <- MeasurementDiagnostics::summariseMeasurementUse(cdm = cdm, 
+                                                                           codes = measurement_codes,
+                                                                           dateRange = dateRange)
+  
   log_message("Characterisation finished")
 } else {
   log_message("Skipping characterisation")
@@ -137,7 +144,8 @@ if (characterisation) {
   results <- c(results, list(
     result_populationCharacteristics, summaryPersonTable, result_missingData,
     result_clinicalRecords, result_recordCounts, result_inObservation,
-    result_observationPeriod, summaryIMD, summaryEthnicity
+    result_observationPeriod, summaryIMD, summaryEthnicity,
+    result_MeasurementUse
   ))
 }
 if (conceptCounts) {
