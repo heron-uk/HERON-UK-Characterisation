@@ -18,7 +18,6 @@ log_message("Start time recorded. Code version: 1.1.0")
 log_message("Getting cdm snapshot")
 snapshot <- OmopSketch::summariseOmopSnapshot(cdm) 
 
-if (characterisation) {
   log_message("Starting characterisation")
   
   # parameters
@@ -120,23 +119,9 @@ if (characterisation) {
                                                                            dateRange = dateRange)
   
   log_message("Characterisation finished")
-} else {
-  log_message("Skipping characterisation")
-}
 
-if (conceptCounts) {
-  # Summarise concept counts
-  log_message("Summarising concept id counts")
-  result_conceptIdCount <- OmopSketch::summariseConceptIdCounts(cdm, 
-                                                                omopTableName = tableName, 
-                                                                sex = sex, 
-                                                                ageGroup = ageGroup, 
-                                                                interval = "years", 
-                                                                dateRange = dateRange)
-} else {
-  log_message("Skipping concept id counts")
-}
 
+ 
 log_message("Binding results")
 # bind results
 results <- list(snapshot)
@@ -148,10 +133,7 @@ if (characterisation) {
     result_MeasurementUse
   ))
 }
-if (conceptCounts) {
-  results <- c(results, list(result_conceptIdCount))
-}
-results <- omopgenerics::bind(results)
+results <- omopgenerics::bind(results) 
 
 # Export results
 log_message("Export results")
@@ -161,19 +143,3 @@ omopgenerics::exportSummarisedResult(results, minCellCount = minCellCount, path 
 # Calculate duration and log
 dur <- abs(as.numeric(Sys.time() - start_time, units = "secs"))
 log_message(paste("Study code finished. Code ran in", floor(dur / 60), "min and", dur %% 60 %/% 1, "sec"))
-
-# Close connection
-CDMConnector::cdmDisconnect(cdm)
-log_message("Database connection closed")
-
-# Zip the results
-log_message("Zipping results") 
-
-files_to_zip <- list.files(outputFolder)
-files_to_zip <- files_to_zip[stringr::str_detect(files_to_zip, dbName)]
-
-zip::zip(
-  zipfile = file.path(paste0(outputFolder, "/results_characterisation_", dbName, ".zip")),
-  files = files_to_zip,
-  root = outputFolder
-)
