@@ -39,8 +39,17 @@ result[["characterisation"]] <- OmopSketch::databaseCharacteristics(cdm,
                                                                     conceptIdCounts = FALSE,
                                                                     sample = NULL, 
                                                                     dateRange = dateRange)
+
+omopgenerics::logMessage("Running measurement diagnostics")
+
+measurement_codes <- omopgenerics::importCodelist(here::here("measurement_codes"), type = "csv")
+
+result[["measurementUse"]] <- MeasurementDiagnostics::summariseMeasurementUse(cdm = cdm, 
+                                                                         codes = measurement_codes,
+                                                                         dateRange = dateRange)
+
  
-results <- omopgenerics::bind(results)
+result <- omopgenerics::bind(result)
 
 # Close connection
 CDMConnector::cdmDisconnect(cdm)
