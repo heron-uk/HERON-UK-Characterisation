@@ -4,7 +4,7 @@ outputFolder <-  here::here("Results")
 source(here::here("scripts", "functions.R"))
 
 logfile <- file.path( paste0(outputFolder, 
-  "/log_", dbName, "_", format(Sys.time(), "%d_%m_%Y_%H_%M_%S"),".txt"
+                             "/log_", dbName, "_", format(Sys.time(), "%d_%m_%Y_%H_%M_%S"),".txt"
 ))
 
 log_message <- function(message) {
@@ -95,7 +95,7 @@ if (characterisation) {
                                                           ageGroup = ageGroup,
                                                           interval = "years",
                                                           dateRange = dateRange)
-
+  
   # Summarize in observation records
   log_message("Summarising in observation records and person-days")
   result_inObservation <- OmopSketch::summariseInObservation(cdm$observation_period, 
@@ -104,19 +104,16 @@ if (characterisation) {
                                                              sex = sex,
                                                              ageGroup = ageGroup,
                                                              dateRange = dateRange) 
-
+  
   # Summarise observation period
   log_message("Summarising observation period")
-  result_observationPeriod1 <- OmopSketch::summariseObservationPeriod(cdm$observation_period, 
-                                                                     sex = sex, 
-                                                                     ageGroup = ageGroup, 
-                                                                     dateRange = dateRange)
-  colsStrata <- omopgenerics::strataColumns(result_observationPeriod1)
-  result_observationPeriod1 <- result_observationPeriod1 |>
-    omopgenerics::splitStrata() |>
-    dplyr::mutate(observation_period_name = "First to last") |>
-    omopgenerics::uniteStrata(cols = c(colsStrata, "observation_period_name")) |>
-    omopgenerics::newSummarisedResult()
+  result_observationPeriod1 <- OmopSketch::summariseObservationPeriod(
+    cdm$observation_period, 
+    sex = sex, 
+    ageGroup = ageGroup, 
+    dateRange = dateRange,
+    # nameObservationPeriod = "Default"
+  )
   
   # Measurement diagnostics
   log_message("Running measurement diagnostics")
@@ -134,14 +131,9 @@ if (characterisation) {
     cdm$observation_period, 
     sex = sex, 
     ageGroup = ageGroup, 
-    dateRange = dateRange
+    dateRange = dateRange,
+    # nameObservationPeriod = "First to last"
   )
-  colsStrata <- omopgenerics::strataColumns(result_observationPeriod2)
-  result_observationPeriod2 <- result_observationPeriod2 |>
-    omopgenerics::splitStrata() |>
-    dplyr::mutate(observation_period_name = "First to last") |>
-    omopgenerics::uniteStrata(cols = c(colsStrata, "observation_period_name")) |>
-    omopgenerics::newSummarisedResult()
   
   # Characterise observation period created by OmopConstructor to compare
   log_message("Create observation period with OmopConstructor - 365 days")
@@ -154,14 +146,9 @@ if (characterisation) {
     cdm$observation_period, 
     sex = sex, 
     ageGroup = ageGroup, 
-    dateRange = dateRange
+    dateRange = dateRange,
+    # nameObservationPeriod = "Collapse 365"
   )
-  colsStrata <- omopgenerics::strataColumns(result_observationPeriod3)
-  result_observationPeriod3 <- result_observationPeriod3 |>
-    omopgenerics::splitStrata() |>
-    dplyr::mutate(observation_period_name = "Collapse 365") |>
-    omopgenerics::uniteStrata(cols = c(colsStrata, "observation_period_name")) |>
-    omopgenerics::newSummarisedResult()
   
   log_message("Characterisation finished")
 } else {
