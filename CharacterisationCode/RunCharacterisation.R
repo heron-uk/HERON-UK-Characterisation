@@ -107,10 +107,16 @@ if (characterisation) {
 
   # Summarise observation period
   log_message("Summarising observation period")
-  result_observationPeriod <- OmopSketch::summariseObservationPeriod(cdm$observation_period, 
+  result_observationPeriod1 <- OmopSketch::summariseObservationPeriod(cdm$observation_period, 
                                                                      sex = sex, 
                                                                      ageGroup = ageGroup, 
                                                                      dateRange = dateRange)
+  colsStrata <- omopgenerics::strataColumns(result_observationPeriod1)
+  result_observationPeriod1 <- result_observationPeriod1 |>
+    omopgenerics::splitStrata() |>
+    dplyr::mutate(observation_period_name = "First to last") |>
+    omopgenerics::uniteStrata(cols = c(colsStrata, "observation_period_name")) |>
+    omopgenerics::newSummarisedResult()
   
   # Measurement diagnostics
   log_message("Running measurement diagnostics")
@@ -118,6 +124,44 @@ if (characterisation) {
   result_MeasurementUse <- MeasurementDiagnostics::summariseMeasurementUse(cdm = cdm, 
                                                                            codes = measurement_codes,
                                                                            dateRange = dateRange)
+  
+  # Characterise observation period created by OmopConstructor to compare
+  log_message("Create observation period with OmopConstructor - first to extraction")
+  cdm <- OmopConstructor::buildObservationPeriod(cdm = cdm)
+  
+  log_message("Summarising created observation period (first to extract)")
+  result_observationPeriod2 <- OmopSketch::summariseObservationPeriod(
+    cdm$observation_period, 
+    sex = sex, 
+    ageGroup = ageGroup, 
+    dateRange = dateRange
+  )
+  colsStrata <- omopgenerics::strataColumns(result_observationPeriod2)
+  result_observationPeriod2 <- result_observationPeriod2 |>
+    omopgenerics::splitStrata() |>
+    dplyr::mutate(observation_period_name = "First to last") |>
+    omopgenerics::uniteStrata(cols = c(colsStrata, "observation_period_name")) |>
+    omopgenerics::newSummarisedResult()
+  
+  # Characterise observation period created by OmopConstructor to compare
+  log_message("Create observation period with OmopConstructor - 365 days")
+  cdm <- OmopConstructor::buildObservationPeriod(cdm = cdm, 
+                                                 collapseDays = 365, 
+                                                 persistenceDays = 365)
+  
+  log_message("Summarising created observation period (365)")
+  result_observationPeriod3 <- OmopSketch::summariseObservationPeriod(
+    cdm$observation_period, 
+    sex = sex, 
+    ageGroup = ageGroup, 
+    dateRange = dateRange
+  )
+  colsStrata <- omopgenerics::strataColumns(result_observationPeriod3)
+  result_observationPeriod3 <- result_observationPeriod3 |>
+    omopgenerics::splitStrata() |>
+    dplyr::mutate(observation_period_name = "Collapse 365") |>
+    omopgenerics::uniteStrata(cols = c(colsStrata, "observation_period_name")) |>
+    omopgenerics::newSummarisedResult()
   
   log_message("Characterisation finished")
 } else {
@@ -144,7 +188,8 @@ if (characterisation) {
   results <- c(results, list(
     result_populationCharacteristics, summaryPersonTable, result_missingData,
     result_clinicalRecords, result_recordCounts, result_inObservation,
-    result_observationPeriod, summaryIMD, summaryEthnicity,
+    result_observationPeriod1, result_observationPeriod2, 
+    result_observationPeriod3, summaryIMD, summaryEthnicity,
     result_MeasurementUse
   ))
 }
