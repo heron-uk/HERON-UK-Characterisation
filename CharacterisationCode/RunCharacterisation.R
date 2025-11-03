@@ -48,6 +48,37 @@ result[["measurementUse"]] <- MeasurementDiagnostics::summariseMeasurementUse(cd
                                                                          codes = measurement_codes,
                                                                          dateRange = dateRange)
 
+omopgenerics::logMessage("Building observation period 'First to extract'")
+
+cdm <- OmopConstructor::buildObservationPeriod(cdm = cdm)
+
+omopgenerics::logMessage("Summarise observation period 'First to extract'")
+
+result$observation_period_2 <- OmopSketch::summariseObservationPeriod(
+  cdm = cdm,
+  sex = sex, 
+  ageGroup = ageGroup, 
+  interval = interval, 
+  dateRange = dateRange,
+  # nameObservationPeriod = "First to extract"
+)
+
+omopgenerics::logMessage("Building observation period 'Collapse 365'")
+
+cdm <- OmopConstructor::buildObservationPeriod(cdm = cdm, 
+                                               collapseDays = 365, 
+                                               persistenceDays = 365)
+
+omopgenerics::logMessage("Summarise observation period 'Collapse 365'")
+
+result$observation_period_3 <- OmopSketch::summariseObservationPeriod(
+  cdm = cdm,
+  sex = sex, 
+  ageGroup = ageGroup, 
+  interval = interval, 
+  dateRange = dateRange,
+  # nameObservationPeriod = "Collapse 365"
+)
  
 result <- omopgenerics::bind(result)
 
@@ -62,9 +93,10 @@ omopgenerics::logMessage(paste("Study code finished. Code ran in", floor(dur / 6
 # Export results
 omopgenerics::logMessage("Export and zipping results")
 
-omopgenerics::exportSummarisedResult(results, minCellCount = minCellCount, path = outputFolder, fileName = paste0(
-  "result_characterisation_", dbName, ".csv"))
-
+omopgenerics::exportSummarisedResult(result,
+                                     minCellCount = minCellCount, 
+                                     path = outputFolder, 
+                                     fileName = "result_characterisation_{cdm_name}.csv")
 
 files_to_zip <- list.files(outputFolder)
 files_to_zip <- files_to_zip[stringr::str_detect(files_to_zip, dbName)]
