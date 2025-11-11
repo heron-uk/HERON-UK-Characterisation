@@ -48,38 +48,58 @@ result[["measurementUse"]] <- MeasurementDiagnostics::summariseMeasurementUse(cd
                                                                          codes = measurement_codes,
                                                                          dateRange = dateRange)
 
-omopgenerics::logMessage("Building observation period 'First to extract'")
-
-cdm <- OmopConstructor::buildObservationPeriod(cdm = cdm)
-
-omopgenerics::logMessage("Summarise observation period 'First to extract'")
-
-result$observation_period_2 <- OmopSketch::summariseObservationPeriod(
+# characterise observation periods
+result$first_to_extract <- summariseCustomObservationPeriod(
   cdm = cdm,
-  sex = sex, 
-  ageGroup = ageGroup, 
-  interval = interval, 
+  collapseDays = Inf,
+  persistenceDays = Inf,
   dateRange = dateRange,
-  # nameObservationPeriod = "First to extract"
+  name = "First to extract"
+)
+result$first_to_last <- summariseCustomObservationPeriod(
+  cdm = cdm,
+  collapseDays = Inf,
+  persistenceDays = 0,
+  dateRange = dateRange,
+  name = "First to last"
+)
+result$ongoing <- summariseCustomObservationPeriod(
+  cdm = cdm,
+  collapseDays = 1,
+  persistenceDays = 0,
+  dateRange = dateRange,
+  name = "Ongoing"
+)
+result$collapse_365 <- summariseCustomObservationPeriod(
+  cdm = cdm,
+  collapseDays = 365,
+  persistenceDays = 0,
+  dateRange = dateRange,
+  name = "Collapse 365"
+)
+result$persistence_365 <- summariseCustomObservationPeriod(
+  cdm = cdm,
+  collapseDays = 365,
+  persistenceDays = 364,
+  dateRange = dateRange,
+  name = "Persistence 365"
+)
+result$collapse_730 <- summariseCustomObservationPeriod(
+  cdm = cdm,
+  collapseDays = 730,
+  persistenceDays = 0,
+  dateRange = dateRange,
+  name = "Collapse 730"
+)
+result$persistence_730 <- summariseCustomObservationPeriod(
+  cdm = cdm,
+  collapseDays = 730,
+  persistenceDays = 729,
+  dateRange = dateRange,
+  name = "Persistence 730"
 )
 
-omopgenerics::logMessage("Building observation period 'Collapse 365'")
-
-cdm <- OmopConstructor::buildObservationPeriod(cdm = cdm, 
-                                               collapseDays = 365, 
-                                               persistenceDays = 365)
-
-omopgenerics::logMessage("Summarise observation period 'Collapse 365'")
-
-result$observation_period_3 <- OmopSketch::summariseObservationPeriod(
-  cdm = cdm,
-  sex = sex, 
-  ageGroup = ageGroup, 
-  interval = interval, 
-  dateRange = dateRange,
-  # nameObservationPeriod = "Collapse 365"
-)
- 
+# bind results  
 result <- omopgenerics::bind(result)
 
 # Close connection
