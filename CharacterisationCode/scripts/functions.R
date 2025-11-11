@@ -80,7 +80,7 @@ summariseImdRecords <- function(cdm) {
       ) |>
       dplyr::select(!"year")
   }
-
+  
   # format result
   result <- result |>
     dplyr::bind_rows() |>
@@ -100,4 +100,40 @@ summariseImdRecords <- function(cdm) {
     dplyr::filter(!is.na(.data$estimate_value))
   
   return(result)
+}
+summariseCustomObservationPeriod <- function(cdm,
+                                             collapseDays,
+                                             persistenceDays,
+                                             dateRange,
+                                             name) {
+  omopgenerics::logMessage("Building observation period '{name}'")
+  cdm <- OmopConstructor::buildObservationPeriod(cdm = cdm, 
+                                                 collapseDays = collapseDays, 
+                                                 persistenceDays = persistenceDays)
+  
+  omopgenerics::logMessage("Summarise observation period '{name}'")
+  res1 <- OmopSketch::summariseObservationPeriod(
+    cdm = cdm,
+    byOrdinal = FALSE,
+    sex = FALSE, 
+    ageGroup = FALSE, 
+    dateRange = dateRange,
+    nameObservationPeriod = name
+  )
+  
+  omopgenerics::logMessage("Summarise in observation '{name}'")
+  res2 <- OmopSketch::summariseTrend(
+    cdm = cdm,
+    ageGroup = FALSE, 
+    sex = FALSE,
+    episode = "observation_period", 
+    interval = "years", 
+    output = c("record", "person", "person-days", "age"),
+    dateRange = dateRange
+  )
+  set <- omopgenerics::settings(x = res2) |>
+    dplyr::mutate(name_observation_period = .env$name)
+  res2 <- omopgenerics::newSummarisedResult(x = res2, settings = set)
+  
+  omopgenerics::bind(res1, res2)
 }

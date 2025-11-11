@@ -248,6 +248,12 @@
       "Maintainer": "Nuria Mercade-Besora <nuria.mercadebesora@ndorms.ox.ac.uk>",
       "Repository": "CRAN"
     },
+    "OmopConstructor": {
+      "Package": "OmopConstructor",
+      "Version": "0.1.0",
+      "Source": "Repository",
+      "Repository": "CRAN"
+    },
     "OmopSketch": {
       "Package": "OmopSketch",
       "Version": "0.5.1.900",

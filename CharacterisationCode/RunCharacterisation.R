@@ -48,7 +48,58 @@ result[["measurementUse"]] <- MeasurementDiagnostics::summariseMeasurementUse(cd
                                                                          codes = measurement_codes,
                                                                          dateRange = dateRange)
 
- 
+# characterise observation periods
+result$first_to_extract <- summariseCustomObservationPeriod(
+  cdm = cdm,
+  collapseDays = Inf,
+  persistenceDays = Inf,
+  dateRange = dateRange,
+  name = "First to extract"
+)
+result$first_to_last <- summariseCustomObservationPeriod(
+  cdm = cdm,
+  collapseDays = Inf,
+  persistenceDays = 0,
+  dateRange = dateRange,
+  name = "First to last"
+)
+result$ongoing <- summariseCustomObservationPeriod(
+  cdm = cdm,
+  collapseDays = 1,
+  persistenceDays = 0,
+  dateRange = dateRange,
+  name = "Ongoing"
+)
+result$collapse_365 <- summariseCustomObservationPeriod(
+  cdm = cdm,
+  collapseDays = 365,
+  persistenceDays = 0,
+  dateRange = dateRange,
+  name = "Collapse 365"
+)
+result$persistence_365 <- summariseCustomObservationPeriod(
+  cdm = cdm,
+  collapseDays = 365,
+  persistenceDays = 364,
+  dateRange = dateRange,
+  name = "Persistence 365"
+)
+result$collapse_730 <- summariseCustomObservationPeriod(
+  cdm = cdm,
+  collapseDays = 730,
+  persistenceDays = 0,
+  dateRange = dateRange,
+  name = "Collapse 730"
+)
+result$persistence_730 <- summariseCustomObservationPeriod(
+  cdm = cdm,
+  collapseDays = 730,
+  persistenceDays = 729,
+  dateRange = dateRange,
+  name = "Persistence 730"
+)
+
+# bind results  
 result <- omopgenerics::bind(result)
 
 # Close connection
@@ -62,9 +113,10 @@ omopgenerics::logMessage(paste("Study code finished. Code ran in", floor(dur / 6
 # Export results
 omopgenerics::logMessage("Export and zipping results")
 
-omopgenerics::exportSummarisedResult(results, minCellCount = minCellCount, path = outputFolder, fileName = paste0(
-  "result_characterisation_", dbName, ".csv"))
-
+omopgenerics::exportSummarisedResult(result,
+                                     minCellCount = minCellCount, 
+                                     path = outputFolder, 
+                                     fileName = "result_characterisation_{cdm_name}.csv")
 
 files_to_zip <- list.files(outputFolder)
 files_to_zip <- files_to_zip[stringr::str_detect(files_to_zip, dbName)]
