@@ -106,25 +106,25 @@ summariseCustomObservationPeriod <- function(cdm,
                                              persistenceDays,
                                              dateRange,
                                              name) {
-  omopgenerics::logMessage("Building observation period '{name}'")
+  omopgenerics::logMessage(paste0("Building observation period ", name))
   cdm <- OmopConstructor::buildObservationPeriod(cdm = cdm, 
                                                  collapseDays = collapseDays, 
                                                  persistenceDays = persistenceDays)
   
-  omopgenerics::logMessage("Summarise observation period '{name}'")
+  omopgenerics::logMessage(paste0("Summarise observation period ", name))
   res1 <- OmopSketch::summariseObservationPeriod(
     cdm = cdm,
     byOrdinal = FALSE,
     sex = FALSE, 
-    ageGroup = FALSE, 
+    ageGroup = NULL, 
     dateRange = dateRange,
     nameObservationPeriod = name
   )
   
-  omopgenerics::logMessage("Summarise in observation '{name}'")
+  omopgenerics::logMessage(paste0("Summarise in observation ",name))
   res2 <- OmopSketch::summariseTrend(
     cdm = cdm,
-    ageGroup = FALSE, 
+    ageGroup = NULL, 
     sex = FALSE,
     episode = "observation_period", 
     interval = "years", 

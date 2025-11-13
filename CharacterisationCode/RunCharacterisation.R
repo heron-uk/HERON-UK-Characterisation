@@ -4,6 +4,13 @@ start_time <- Sys.time()
 outputFolder <-  here::here("Results")
 source(here::here("scripts", "functions.R"))
 
+if(isTRUE(logSql)){
+  options(omopgenerics.log_sql_path = here::here("Results", "sql_logs"))
+}
+if(isTRUE(logSqlExplain)){
+  options(omopgenerics.log_sql_explain_path = here::here("Results", "sql_explain"))
+}
+
 log_file <- file.path(outputFolder, paste0("/log_", dbName, "_", format(Sys.time(), "%d_%m_%Y_%H_%M_%S"), ".txt"))
 
 omopgenerics::createLogFile(logFile = log_file)
@@ -102,10 +109,6 @@ result$persistence_730 <- summariseCustomObservationPeriod(
 # bind results  
 result <- omopgenerics::bind(result)
 
-# Close connection
-CDMConnector::cdmDisconnect(cdm)
-omopgenerics::logMessage("Database connection closed")
-
 # Calculate duration and log
 dur <- abs(as.numeric(Sys.time() - start_time, units = "secs"))
 omopgenerics::logMessage(paste("Study code finished. Code ran in", floor(dur / 60), "min and", dur %% 60 %/% 1, "sec"))
@@ -116,13 +119,9 @@ omopgenerics::logMessage("Export and zipping results")
 omopgenerics::exportSummarisedResult(result,
                                      minCellCount = minCellCount, 
                                      path = outputFolder, 
-                                     fileName = "result_characterisation_{cdm_name}.csv")
-
-files_to_zip <- list.files(outputFolder)
-files_to_zip <- files_to_zip[stringr::str_detect(files_to_zip, dbName)]
-
-zip::zip(
-  zipfile = file.path(paste0(outputFolder, "/results_characterisation_", dbName, ".zip")),
-  files = files_to_zip,
-  root = outputFolder
+                                     fileName = "result_characterisation_{cdm_name}_{date}.csv", 
+                                     logSqlPath = NULL,
+                                     logExplainPath = NULL
 )
+
+
