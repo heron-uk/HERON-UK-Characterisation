@@ -1,55 +1,50 @@
-# shiny is prepared to work with this resultList, please do not change them
+# shiny is prepared to work with this resultList:
 resultList <- list(
-  "summarise_omop_snapshot" ,
-  "summarise_characteristics",
-  "summarise_missing_data" ,
-  "summarise_clinical_records" ,
-  "summarise_record_count" ,
-  "summarise_in_observation" ,
-  "summarise_observation_period"
+  summarise_omop_snapshot = list(result_type = "summarise_omop_snapshot"),
+  summarise_observation_period = list(result_type = "summarise_observation_period"),
+  summarise_clinical_records = list(result_type = "summarise_clinical_records"),
+  summarise_trend_episode = list(result_type = "summarise_trend", type = "episode"),
+  summarise_trend_event = list(result_type = "summarise_trend", type = "event"),
+  summarise_person = list(result_type = "summarise_person"),
+  summarise_characteristics = list(result_type = "summarise_characteristics"),
+  summarise_imd = list(result_type = "summarise_imd"),
+  measurement_timings = list(result_type = "measurement_timings"),
+  measurement_value_as_numeric = list(result_type = "measurement_value_as_numeric"),
+  measurement_value_as_concept = list(result_type = "measurement_value_as_concept"),
+  summarise_log_file = list(result_type = "summarise_log_file")
 )
 
 source(file.path(getwd(), "functions.R"))
 
-data_path <- file.path(getwd(), "data")
-csv_files <- list.files(data_path, pattern = "\\.csv$", full.names = TRUE)
-
-result <- purrr::map(csv_files, \(x){
-  utils::read.csv(x) |> 
-    omopgenerics::newSummarisedResult() |>
-    omopgenerics::filterSettings(result_type != "summarise_concept_id_counts")
-}) |> 
-  omopgenerics::bind()
-
-# result <- omopgenerics::importSummarisedResult(file.path(getwd(), "data"))
-resultList <- resultList |>
-  purrr::map(\(x) {
-    omopgenerics::settings(result) |>
-      dplyr::filter(.data$result_type %in% .env$x) |>
-      dplyr::pull(.data$result_id) }) |>
-  rlang::set_names(resultList)
+result <- omopgenerics::importSummarisedResult(file.path(getwd(), "data"))
 data <- prepareResult(result, resultList)
 
-filterValues <- defaultFilterValues(result, resultList)
+set <- omopgenerics::settings(data[["summarise_observation_period"]])
 
-data$summarise_missing_data <- data$summarise_missing_data |>
-  omopgenerics::splitAll() |>
-  dplyr::rename("column_name" = "variable_name") |>
-  dplyr::mutate(
-    interval = dplyr::if_else(
-      .data$year == "overall" & .data$time_interval == "overall",
-      "overall",
-      dplyr::if_else(
-        .data$year != "overall",
-        .data$year,
-        substr(.data$time_interval, 1, 4)
-      )
-    )
-  ) |> dplyr::select(!c("time_interval", "year"))
+set <- set |>
+  dplyr::mutate("name_observation_period" = dplyr::coalesce(.data$name_observation_period, "Default"))
 
-filterValues$summarise_missing_data_grouping_interval <- unique(data$summarise_missing_data$interval)
-filterValues$summarise_missing_data_tidy_columns <- c("cdm_name",	"omop_table",	"age_group","sex",	"interval",	"column_name")
+data[["summarise_observation_period"]] <- omopgenerics::newSummarisedResult(x = data[["summarise_observation_period"]], settings = set)
 
-save(data, filterValues, file = file.path(getwd(), "data", "shinyData.RData"))
 
-rm(result, filterValues, resultList, data)
+set <- omopgenerics::settings(data[["summarise_trend_episode"]])
+
+set <- set |>
+  dplyr::mutate("name_observation_period" = dplyr::coalesce(.data$name_observation_period, "Default"))
+
+data[["summarise_trend_episode"]] <- omopgenerics::newSummarisedResult(x = data[["summarise_trend_episode"]], settings = set)
+
+
+
+result <- data |> omopgenerics::bind()
+
+values <- getValues(result, resultList)
+
+
+# edit choices and values of interest
+choices <- values
+selected <- getSelected(values)
+
+save(data, choices, selected, values, file = file.path(getwd(), "data", "shinyData.RData"))
+
+rm(result, values, choices, selected, resultList, data)
