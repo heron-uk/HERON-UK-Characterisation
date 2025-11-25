@@ -24,9 +24,7 @@ result <- list()
 omopgenerics::logMessage("Summarising IMD records")
 result[["summaryIMD"]] <- summariseImdRecords(cdm)
 
-omopTableName <- c("visit_occurrence", "visit_detail",
-  "condition_occurrence", "drug_exposure", "procedure_occurrence",
-  "device_exposure", "measurement", "observation", "death")
+omopTableName <- OmopSketch::clinicalTables()
 
 sex <- TRUE
 
