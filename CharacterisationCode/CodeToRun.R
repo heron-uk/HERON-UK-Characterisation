@@ -16,11 +16,9 @@ cdm <- CDMConnector::cdmFromCon(con = con,
                                                 prefix = prefix),
                                 cdmName = dbName)
 
-minCellCount = 5
+minCellCount <- 5
 
-logSql<- FALSE
+logSql <- FALSE
 logSqlExplain <- FALSE
 
 source("RunCharacterisation.R")
-
-CDMConnector::cdmDisconnect(cdm)

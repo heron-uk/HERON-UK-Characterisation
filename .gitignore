@@ -61,3 +61,4 @@ CharacterisationCode/Results/*.txt
 
 
 Shiny/data/*.csv
+shiny/data/shinyData.RData
