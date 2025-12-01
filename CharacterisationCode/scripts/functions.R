@@ -212,7 +212,6 @@ databaseCharacteristicsLocal <- function(cdm,
 
   result$populationCharacteristics <- cdm$population |>
     CohortCharacteristics::summariseCharacteristics(
-      strata = "sex",
       estimates = list(
         date = c("min", "q25", "median", "q75", "max"),
         numeric = c("min", "q25", "median", "q75", "max", "mean", "sd", "density"),
@@ -233,10 +232,12 @@ databaseCharacteristicsLocal <- function(cdm,
   cli::cli_inform(paste(cli::symbol$arrow_right, "Summarising clinical records"))
   result$clinicalRecords <- OmopSketch::summariseClinicalRecords(cdm,
     omopTableName = omopTableName,
+    recordsPerPerson = c("median", "q25", "q75", "min", "max"),
     sex = FALSE,
     ageGroup = NULL,
     dateRange = dateRange, 
-    conceptSummary = FALSE
+    conceptSummary = TRUE, 
+    missingData = TRUE
   )
 
 
@@ -255,10 +256,10 @@ databaseCharacteristicsLocal <- function(cdm,
     cdm = cdm,
     episode = "observation_period",
     event = c(omopTableName, "observation_period"),
-    output = c("record", "person", "person-days", "age", "sex"),
+    output = c("record", "person", "person-days"),
     interval = interval,
-    sex = sex,
-    ageGroup = ageGroup,
+    sex = FALSE,
+    ageGroup = NULL,
     dateRange = dateRange,
     inObservation = inObservation
   )

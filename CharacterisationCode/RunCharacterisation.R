@@ -11,7 +11,8 @@ if (isTRUE(logSqlExplain)) {
   options(omopgenerics.log_sql_explain_path = here::here("Results", "sql_explain"))
 }
 
-log_file <- file.path(outputFolder, paste0("/log_", dbName, "_", format(Sys.time(), "%d_%m_%Y_%H_%M_%S"), ".txt"))
+log_file <- file.path(outputFolder, paste0("/log_", omopgenerics::cdmName(cdm),
+                                           "_", format(Sys.time(), "%d_%m_%Y_%H_%M_%S"), ".txt"))
 
 omopgenerics::createLogFile(logFile = log_file)
 
@@ -31,9 +32,8 @@ omopTableName <- c(
   "drug_era", "dose_era", "condition_era"
 )
 
-sex <- TRUE
-
-ageGroup <- list(c(0, 17), c(18, 65), c(66, Inf))
+sex <- FALSE
+ageGroup <- NULL
 dateRange <- as.Date(c("2012-01-01", NA))
 
 interval <- "years"
