@@ -118,7 +118,7 @@ dur <- abs(as.numeric(Sys.time() - start_time, units = "secs"))
 omopgenerics::logMessage(paste("Study code finished. Code ran in", floor(dur / 60), "min and", dur %% 60 %/% 1, "sec"))
 
 # Export results
-omopgenerics::logMessage("Export and zipping results")
+omopgenerics::logMessage("Exporting results")
 
 omopgenerics::exportSummarisedResult(result,
   minCellCount = minCellCount,
