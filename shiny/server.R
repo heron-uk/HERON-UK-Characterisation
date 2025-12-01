@@ -73,8 +73,8 @@ server <- function(input, output, session) {
     updateButtons$summarise_observation_period <- TRUE
   }) |> shiny::bindEvent(input$summarise_observation_period_cdm_name,
                          input$summarise_observation_period_observation_period_ordinal,
-                         input$summarise_observation_period_age_group,
-                         input$summarise_observation_period_sex,
+                         # input$summarise_observation_period_age_group,
+                         # input$summarise_observation_period_sex,
                          input$summarise_observation_period_variable_name,
                          input$summarise_observation_period_estimate_name,
                          input$summarise_observation_period_name,
@@ -100,10 +100,10 @@ server <- function(input, output, session) {
         .data$estimate_name %in% input$summarise_observation_period_estimate_name
       ) |>
       omopgenerics::filterGroup(.data$observation_period_ordinal %in% input$summarise_observation_period_observation_period_ordinal) |>
-      omopgenerics::filterStrata(
-        .data$age_group %in% input$summarise_observation_period_age_group,
-        .data$sex %in% input$summarise_observation_period_sex
-      ) |>
+      # omopgenerics::filterStrata(
+      #   .data$age_group %in% input$summarise_observation_period_age_group,
+      #   .data$sex %in% input$summarise_observation_period_sex
+      # ) |>
       omopgenerics::filterSettings(.data$name_observation_period %in% input$summarise_observation_period_name)
   })
   getSummariseObservationPeriodTable <- shiny::reactive({
@@ -288,7 +288,7 @@ server <- function(input, output, session) {
     updateButtons$summarise_characteristics <- TRUE
   }) |> shiny::bindEvent(input$summarise_characteristics_cdm_name,
                          input$summarise_characteristics_cohort_name,
-                         input$summarise_characteristics_sex,
+                         # input$summarise_characteristics_sex,
                          input$summarise_characteristics_variable_name,
                          input$summarise_characteristics_estimate_name,
                          ignoreInit = TRUE
@@ -312,8 +312,9 @@ server <- function(input, output, session) {
         .data$variable_name %in% input$summarise_characteristics_variable_name,
         .data$estimate_name %in% input$summarise_characteristics_estimate_name
       ) |>
-      omopgenerics::filterGroup(.data$cohort_name %in% input$summarise_characteristics_cohort_name) |>
-      omopgenerics::filterStrata(.data$sex %in% input$summarise_characteristics_sex)
+      omopgenerics::filterGroup(.data$cohort_name %in% input$summarise_characteristics_cohort_name) 
+    # |>
+    #   omopgenerics::filterStrata(.data$sex %in% input$summarise_characteristics_sex)
   })
   getSummariseCharacteristicsTable <- shiny::reactive({
     getSummariseCharacteristicsData() |>
@@ -363,8 +364,8 @@ server <- function(input, output, session) {
     updateButtons$summarise_trend_episode <- TRUE
   }) |> shiny::bindEvent(input$summarise_trend_episode_cdm_name,
                          input$summarise_trend_episode_omop_table,
-                         input$summarise_trend_episode_age_group,
-                         input$summarise_trend_episode_sex,
+                         # input$summarise_trend_episode_age_group,
+                         # input$summarise_trend_episode_sex,
                          input$summarise_trend_episode_time_interval,
                          input$summarise_trend_episode_name_observation_period,
                          input$summarise_trend_episode_variable_name,
@@ -390,10 +391,10 @@ server <- function(input, output, session) {
         .data$variable_name %in% input$summarise_trend_episode_variable_name,
         .data$estimate_name %in% input$summarise_trend_episode_estimate_name
       ) |>
-      omopgenerics::filterStrata(
-        .data$age_group %in% input$summarise_trend_episode_age_group,
-        .data$sex %in% input$summarise_trend_episode_sex
-      ) |>
+      # omopgenerics::filterStrata(
+      #   .data$age_group %in% input$summarise_trend_episode_age_group,
+      #   .data$sex %in% input$summarise_trend_episode_sex
+      # ) |>
       omopgenerics::filterAdditional(.data$time_interval %in% input$summarise_trend_episode_time_interval) |>
       omopgenerics::filterSettings(
         .data$name_observation_period %in% input$summarise_trend_episode_name_observation_period)
@@ -442,8 +443,8 @@ server <- function(input, output, session) {
     updateButtons$summarise_trend_event <- TRUE
   }) |> shiny::bindEvent(input$summarise_trend_event_cdm_name,
                          input$summarise_trend_event_omop_table,
-                         input$summarise_trend_event_age_group,
-                         input$summarise_trend_event_sex,
+                         # input$summarise_trend_event_age_group,
+                         # input$summarise_trend_event_sex,
                          input$summarise_trend_event_in_observation,
                          input$summarise_trend_event_variable_name,
                          input$summarise_trend_event_estimate_name,
@@ -471,8 +472,8 @@ server <- function(input, output, session) {
       ) |>
       omopgenerics::filterGroup(.data$omop_table %in% input$summarise_trend_event_omop_table) |>
       omopgenerics::filterStrata(
-        .data$age_group %in% input$summarise_trend_event_age_group,
-        .data$sex %in% input$summarise_trend_event_sex,
+        # .data$age_group %in% input$summarise_trend_event_age_group,
+        # .data$sex %in% input$summarise_trend_event_sex,
         .data$in_observation %in% input$summarise_trend_event_in_observation
       ) |>
       omopgenerics::filterAdditional(.data$time_interval %in% input$summarise_trend_event_time_interval)
