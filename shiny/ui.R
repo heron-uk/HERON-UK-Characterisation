@@ -119,14 +119,14 @@ ui <- bslib::page_navbar(
           multiple = TRUE,
           options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
         ),
-        shinyWidgets::pickerInput(
-          inputId = "summarise_characteristics_sex",
-          label = "Sex",
-          choices = choices$summarise_characteristics_sex,
-          selected = selected$summarise_characteristics_sex,
-          multiple = TRUE,
-          options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-        ),
+        # shinyWidgets::pickerInput(
+        #   inputId = "summarise_characteristics_sex",
+        #   label = "Sex",
+        #   choices = choices$summarise_characteristics_sex,
+        #   selected = selected$summarise_characteristics_sex,
+        #   multiple = TRUE,
+        #   options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+        # ),
         shinyWidgets::pickerInput(
           inputId = "summarise_characteristics_variable_name",
           label = "Variable name",
@@ -171,7 +171,9 @@ ui <- bslib::page_navbar(
                   header = NULL,
                   sortable::add_rank_list(
                     text = "None",
-                    labels = c("sex", "variable_name", "variable_level", "estimate_name"),
+                    labels = c(
+                      # "sex", 
+                               "variable_name", "variable_level", "estimate_name"),
                     input_id = "summarise_characteristics_table_none"
                   ),
                   sortable::add_rank_list(
@@ -249,7 +251,9 @@ ui <- bslib::page_navbar(
                 shinyWidgets::pickerInput(
                   inputId = "summarise_characteristics_plot_facet",
                   label = "Facet",
-                  choices = c("cdm_name", "cohort_name", "sex"),
+                  choices = c("cdm_name", "cohort_name"
+                              # , "sex"
+                              ),
                   selected = "cdm_name",
                   multiple = TRUE,
                   options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
@@ -257,7 +261,9 @@ ui <- bslib::page_navbar(
                 shinyWidgets::pickerInput(
                   inputId = "summarise_characteristics_plot_colour",
                   label = "Colour",
-                  choices = c("cdm_name", "cohort_name", "sex"),
+                  choices = c("cdm_name", "cohort_name"
+                              # , "sex"
+                              ),
                   selected = "cohort_name",
                   multiple = TRUE,
                   options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
@@ -536,22 +542,22 @@ ui <- bslib::page_navbar(
             multiple = TRUE,
             options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
           ),
-          shinyWidgets::pickerInput(
-            inputId = "summarise_observation_period_age_group",
-            label = "Age group",
-            choices = choices$summarise_observation_period_age_group,
-            selected = selected$summarise_observation_period_age_group,
-            multiple = TRUE,
-            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-          ),
-          shinyWidgets::pickerInput(
-            inputId = "summarise_observation_period_sex",
-            label = "Sex",
-            choices = choices$summarise_observation_period_sex,
-            selected = selected$summarise_observation_period_sex,
-            multiple = TRUE,
-            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-          ),
+          # shinyWidgets::pickerInput(
+          #   inputId = "summarise_observation_period_age_group",
+          #   label = "Age group",
+          #   choices = choices$summarise_observation_period_age_group,
+          #   selected = selected$summarise_observation_period_age_group,
+          #   multiple = TRUE,
+          #   options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+          # ),
+          # shinyWidgets::pickerInput(
+          #   inputId = "summarise_observation_period_sex",
+          #   label = "Sex",
+          #   choices = choices$summarise_observation_period_sex,
+          #   selected = selected$summarise_observation_period_sex,
+          #   multiple = TRUE,
+          #   options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+          # ),
           shinyWidgets::pickerInput(
             inputId = "summarise_observation_period_variable_name",
             label = "Variable name",
@@ -731,22 +737,22 @@ ui <- bslib::page_navbar(
             multiple = TRUE,
             options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
           ),
-          shinyWidgets::pickerInput(
-            inputId = "summarise_trend_episode_age_group",
-            label = "Age group",
-            choices = choices$summarise_trend_episode_age_group,
-            selected = "overall",
-            multiple = TRUE,
-            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-          ),
-          shinyWidgets::pickerInput(
-            inputId = "summarise_trend_episode_sex",
-            label = "Sex",
-            choices = choices$summarise_trend_episode_sex,
-            selected = "overall",
-            multiple = TRUE,
-            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-          ),
+          # shinyWidgets::pickerInput(
+          #   inputId = "summarise_trend_episode_age_group",
+          #   label = "Age group",
+          #   choices = choices$summarise_trend_episode_age_group,
+          #   selected = "overall",
+          #   multiple = TRUE,
+          #   options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+          # ),
+          # shinyWidgets::pickerInput(
+          #   inputId = "summarise_trend_episode_sex",
+          #   label = "Sex",
+          #   choices = choices$summarise_trend_episode_sex,
+          #   selected = "overall",
+          #   multiple = TRUE,
+          #   options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+          # ),
           shinyWidgets::pickerInput(
             inputId = "summarise_trend_episode_time_interval",
             label = "Interval",
