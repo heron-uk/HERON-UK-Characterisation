@@ -1,3 +1,6 @@
+logSql <- FALSE
+logSqlExplain <- FALSE
+
 # Start
 start_time <- Sys.time()
 
@@ -124,6 +127,5 @@ omopgenerics::exportSummarisedResult(result,
   minCellCount = minCellCount,
   path = outputFolder,
   fileName = "result_characterisation_{cdm_name}_{date}.csv",
-  logSqlPath = NULL,
-  logExplainPath = NULL
+  logSqlPath = NULL
 )

@@ -761,22 +761,22 @@ ui <- bslib::page_navbar(
             multiple = TRUE,
             options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
           ),
-          shinyWidgets::pickerInput(
-            inputId = "summarise_trend_episode_variable_name",
-            label = "Variable name",
-            choices = choices$summarise_trend_episode_variable_name,
-            selected = selected$summarise_trend_episode_variable_name,
-            multiple = TRUE,
-            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-          ),
-          shinyWidgets::pickerInput(
-            inputId = "summarise_trend_episode_estimate_name",
-            label = "Estimate name",
-            choices = choices$summarise_trend_episode_estimate_name,
-            selected = selected$summarise_trend_episode_estimate_name,
-            multiple = TRUE,
-            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-          ),
+          # shinyWidgets::pickerInput(
+          #   inputId = "summarise_trend_episode_variable_name",
+          #   label = "Variable name",
+          #   choices = choices$summarise_trend_episode_variable_name,
+          #   selected = selected$summarise_trend_episode_variable_name,
+          #   multiple = TRUE,
+          #   options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+          # ),
+          # shinyWidgets::pickerInput(
+          #   inputId = "summarise_trend_episode_estimate_name",
+          #   label = "Estimate name",
+          #   choices = choices$summarise_trend_episode_estimate_name,
+          #   selected = selected$summarise_trend_episode_estimate_name,
+          #   multiple = TRUE,
+          #   options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+          # ),
           position = "left"
         ),
         bslib::navset_card_tab(
@@ -996,22 +996,22 @@ ui <- bslib::page_navbar(
             multiple = TRUE,
             options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
           ),
-          shinyWidgets::pickerInput(
-            inputId = "summarise_trend_event_age_group",
-            label = "Age group",
-            choices = choices$summarise_trend_event_age_group,
-            selected = "overall",
-            multiple = TRUE,
-            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-          ),
-          shinyWidgets::pickerInput(
-            inputId = "summarise_trend_event_sex",
-            label = "Sex",
-            choices = choices$summarise_trend_event_sex,
-            selected = "overall",
-            multiple = TRUE,
-            options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
-          ),
+          # shinyWidgets::pickerInput(
+          #   inputId = "summarise_trend_event_age_group",
+          #   label = "Age group",
+          #   choices = choices$summarise_trend_event_age_group,
+          #   selected = "overall",
+          #   multiple = TRUE,
+          #   options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+          # ),
+          # shinyWidgets::pickerInput(
+          #   inputId = "summarise_trend_event_sex",
+          #   label = "Sex",
+          #   choices = choices$summarise_trend_event_sex,
+          #   selected = "overall",
+          #   multiple = TRUE,
+          #   options = list(`actions-box` = TRUE, size = 10, `selected-text-format` = "count > 3")
+          # ),
           shinyWidgets::pickerInput(
             inputId = "summarise_trend_event_in_observation",
             label = "In observation",
