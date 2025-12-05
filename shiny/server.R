@@ -368,8 +368,8 @@ server <- function(input, output, session) {
                          # input$summarise_trend_episode_sex,
                          input$summarise_trend_episode_time_interval,
                          input$summarise_trend_episode_name_observation_period,
-                         input$summarise_trend_episode_variable_name,
-                         input$summarise_trend_episode_estimate_name,
+                         # input$summarise_trend_episode_variable_name,
+                         # input$summarise_trend_episode_estimate_name,
                          ignoreInit = TRUE
   )
   shiny::observeEvent(updateButtons$summarise_trend_episode, {
@@ -387,9 +387,10 @@ server <- function(input, output, session) {
   getSummariseTrendEpisodeData <- shiny::eventReactive(input$update_summarise_trend_episode, {
     data[["summarise_trend_episode"]] |>
       dplyr::filter(
-        .data$cdm_name %in% input$summarise_trend_episode_cdm_name,
-        .data$variable_name %in% input$summarise_trend_episode_variable_name,
-        .data$estimate_name %in% input$summarise_trend_episode_estimate_name
+        .data$cdm_name %in% input$summarise_trend_episode_cdm_name
+        # ,
+        # .data$variable_name %in% input$summarise_trend_episode_variable_name,
+        # .data$estimate_name %in% input$summarise_trend_episode_estimate_name
       ) |>
       # omopgenerics::filterStrata(
       #   .data$age_group %in% input$summarise_trend_episode_age_group,

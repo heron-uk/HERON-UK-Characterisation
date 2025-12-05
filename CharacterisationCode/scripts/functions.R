@@ -251,12 +251,25 @@ databaseCharacteristicsLocal <- function(cdm,
   )
 
   # Summarize in observation records
-  cli::cli_inform(paste(cli::symbol$arrow_right, "Summarising trends: records, subjects, person-days, age and sex"))
+  cli::cli_inform(paste(cli::symbol$arrow_right, "Summarising observation period trends"))
   result$trend <- OmopSketch::summariseTrend(
     cdm = cdm,
     episode = "observation_period",
-    event = c(omopTableName, "observation_period"),
-    output = c("record", "person", "person-days"),
+    event = "observation_period",
+    output = "person-days",
+    interval = interval,
+    sex = FALSE,
+    ageGroup = NULL,
+    dateRange = dateRange,
+    inObservation = inObservation
+  )
+  
+  # Summarise trends in clinical records
+  cli::cli_inform(paste(cli::symbol$arrow_right, "Summarising observation period trends"))
+  result$clinical_trend <- OmopSketch::summariseTrend(
+    cdm = cdm,
+    event = omopTableName,
+    output = "record",
     interval = interval,
     sex = FALSE,
     ageGroup = NULL,
