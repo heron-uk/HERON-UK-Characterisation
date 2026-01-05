@@ -52,16 +52,6 @@ result[["characterisation"]] <- databaseCharacteristicsLocal(cdm,
   dateRange = dateRange
 )
 
-omopgenerics::logMessage("Running measurement diagnostics")
-
-measurement_codes <- omopgenerics::importCodelist(here::here("measurement_codes"), type = "csv")
-
-result[["measurementUse"]] <- MeasurementDiagnostics::summariseMeasurementUse(
-  cdm = cdm,
-  codes = measurement_codes,
-  dateRange = dateRange
-)
-
 # characterise observation periods
 result$first_to_extract <- summariseCustomObservationPeriod(
   cdm = cdm,
