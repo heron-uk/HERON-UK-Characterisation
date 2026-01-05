@@ -8,9 +8,6 @@ resultList <- list(
   summarise_person = list(result_type = "summarise_person"),
   summarise_characteristics = list(result_type = "summarise_characteristics"),
   summarise_imd = list(result_type = "summarise_imd"),
-  measurement_timings = list(result_type = "measurement_timings"),
-  measurement_value_as_numeric = list(result_type = "measurement_value_as_numeric"),
-  measurement_value_as_concept = list(result_type = "measurement_value_as_concept"),
   summarise_log_file = list(result_type = "summarise_log_file")
 )
 
