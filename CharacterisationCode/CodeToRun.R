@@ -29,4 +29,7 @@ cdm <- CDMConnector::cdmFromCon(
   cdmName = dbName
 )
 
+runCharacterisation <- TRUE
+runOmopConstructor <- TRUE #turn to FALSE if you don't to run the characterisation of the observation period
+
 source("RunCharacterisation.R")
