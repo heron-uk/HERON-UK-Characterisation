@@ -14,8 +14,10 @@ if (isTRUE(logSqlExplain)) {
   options(omopgenerics.log_sql_explain_path = here::here("Results", "sql_explain"))
 }
 
-log_file <- file.path(outputFolder, paste0("/log_", omopgenerics::cdmName(cdm),
-                                           "_", format(Sys.time(), "%d_%m_%Y_%H_%M_%S"), ".txt"))
+log_file <- file.path(outputFolder, paste0(
+  "/log_", omopgenerics::cdmName(cdm),
+  "_", format(Sys.time(), "%d_%m_%Y_%H_%M_%S"), ".txt"
+))
 
 omopgenerics::createLogFile(logFile = log_file)
 
@@ -24,85 +26,89 @@ initialTables <- omopgenerics::listSourceTables(cdm = cdm)
 
 result <- list()
 
-# Summarise IMD records
-omopgenerics::logMessage("Summarising IMD records")
-result[["summaryIMD"]] <- summariseImdRecords(cdm)
 
-omopTableName <- c(
-  "visit_occurrence", "visit_detail", "condition_occurrence", "drug_exposure",
-  "procedure_occurrence", "device_exposure", "measurement", "observation",
-  "death", "note", "payer_plan_period",
-  "drug_era", "dose_era", "condition_era"
-)
+if (runCharacterisation) {
+  # Summarise IMD records
+  omopgenerics::logMessage("Summarising IMD records")
+  result[["summaryIMD"]] <- summariseImdRecords(cdm)
 
-sex <- FALSE
-ageGroup <- NULL
-dateRange <- as.Date(c("2012-01-01", NA))
+  omopTableName <- c(
+    "visit_occurrence", "visit_detail", "condition_occurrence", "drug_exposure",
+    "procedure_occurrence", "device_exposure", "measurement", "observation",
+    "death", "note", "payer_plan_period",
+    "drug_era", "dose_era", "condition_era"
+  )
 
-interval <- "years"
+  sex <- FALSE
+  ageGroup <- NULL
+  dateRange <- as.Date(c("2012-01-01", NA))
 
-omopgenerics::logMessage("Starting characterisation")
+  interval <- "years"
 
-result[["characterisation"]] <- databaseCharacteristicsLocal(cdm,
-                                                             omopTableName = omopTableName,
-  sex = sex,
-  ageGroup = ageGroup,
-  interval = interval,
-  inObservation = TRUE,
-  dateRange = dateRange
-)
+  omopgenerics::logMessage("Starting characterisation")
 
-# characterise observation periods
-result$first_to_extract <- summariseCustomObservationPeriod(
-  cdm = cdm,
-  collapseDays = Inf,
-  persistenceDays = Inf,
-  dateRange = dateRange,
-  name = "First to extract"
-)
-result$first_to_last <- summariseCustomObservationPeriod(
-  cdm = cdm,
-  collapseDays = Inf,
-  persistenceDays = 0,
-  dateRange = dateRange,
-  name = "First to last"
-)
-result$ongoing <- summariseCustomObservationPeriod(
-  cdm = cdm,
-  collapseDays = 1,
-  persistenceDays = 0,
-  dateRange = dateRange,
-  name = "Ongoing"
-)
-result$collapse_365 <- summariseCustomObservationPeriod(
-  cdm = cdm,
-  collapseDays = 365,
-  persistenceDays = 0,
-  dateRange = dateRange,
-  name = "Collapse 365"
-)
-result$persistence_365 <- summariseCustomObservationPeriod(
-  cdm = cdm,
-  collapseDays = 365,
-  persistenceDays = 364,
-  dateRange = dateRange,
-  name = "Persistence 365"
-)
-result$collapse_730 <- summariseCustomObservationPeriod(
-  cdm = cdm,
-  collapseDays = 730,
-  persistenceDays = 0,
-  dateRange = dateRange,
-  name = "Collapse 730"
-)
-result$persistence_730 <- summariseCustomObservationPeriod(
-  cdm = cdm,
-  collapseDays = 730,
-  persistenceDays = 729,
-  dateRange = dateRange,
-  name = "Persistence 730"
-)
+  result[["characterisation"]] <- databaseCharacteristicsLocal(cdm,
+    omopTableName = omopTableName,
+    sex = sex,
+    ageGroup = ageGroup,
+    interval = interval,
+    inObservation = TRUE,
+    dateRange = dateRange
+  )
+}
 
+if (runOmopConstructor) {
+  # characterise observation periods
+  result$first_to_extract <- summariseCustomObservationPeriod(
+    cdm = cdm,
+    collapseDays = Inf,
+    persistenceDays = Inf,
+    dateRange = dateRange,
+    name = "First to extract"
+  )
+  result$first_to_last <- summariseCustomObservationPeriod(
+    cdm = cdm,
+    collapseDays = Inf,
+    persistenceDays = 0,
+    dateRange = dateRange,
+    name = "First to last"
+  )
+  result$ongoing <- summariseCustomObservationPeriod(
+    cdm = cdm,
+    collapseDays = 1,
+    persistenceDays = 0,
+    dateRange = dateRange,
+    name = "Ongoing"
+  )
+  result$collapse_365 <- summariseCustomObservationPeriod(
+    cdm = cdm,
+    collapseDays = 365,
+    persistenceDays = 0,
+    dateRange = dateRange,
+    name = "Collapse 365"
+  )
+  result$persistence_365 <- summariseCustomObservationPeriod(
+    cdm = cdm,
+    collapseDays = 365,
+    persistenceDays = 364,
+    dateRange = dateRange,
+    name = "Persistence 365"
+  )
+  result$collapse_730 <- summariseCustomObservationPeriod(
+    cdm = cdm,
+    collapseDays = 730,
+    persistenceDays = 0,
+    dateRange = dateRange,
+    name = "Collapse 730"
+  )
+  result$persistence_730 <- summariseCustomObservationPeriod(
+    cdm = cdm,
+    collapseDays = 730,
+    persistenceDays = 729,
+    dateRange = dateRange,
+    name = "Persistence 730"
+  )
+}
 # bind results
 result <- omopgenerics::bind(result)
 
