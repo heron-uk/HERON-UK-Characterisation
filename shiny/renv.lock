@@ -342,7 +342,8 @@
         "ggplot2",
         "visOmopResults (>= 1.4.0)",
         "devtools",
-        "usethis"
+        "usethis",
+        "plotly"
       ],
       "Config/testthat/edition": "3",
       "Config/testthat/parallel": "true",
@@ -365,13 +366,14 @@
       "URL": "https://OHDSI.github.io/OmopSketch/",
       "BugReports": "https://github.com/OHDSI/OmopSketch/issues",
       "VignetteBuilder": "knitr",
-      "Author": "Marta Alcalde-Herraiz [aut] (ORCID: <https://orcid.org/0009-0002-4405-1814>), Kim Lopez-Guell [aut] (ORCID: <https://orcid.org/0000-0002-8462-8668>), Elin Rowlands [aut] (ORCID: <https://orcid.org/0009-0005-5166-0417>), Cecilia Campanile [aut, cre] (ORCID: <https://orcid.org/0009-0007-6629-4661>), Edward Burn [aut] (ORCID: <https://orcid.org/0000-0002-9286-1128>), Martí Català [aut] (ORCID: <https://orcid.org/0000-0003-3308-9905>)",
       "RemoteType": "github",
-      "RemoteUsername": "OHDSI",
+      "RemoteHost": "api.github.com",
       "RemoteRepo": "OmopSketch",
+      "RemoteUsername": "OHDSI",
       "RemoteRef": "HEAD",
-      "RemoteSha": "b067d63975aa676cc4041a982f232d1889047938",
-      "RemoteHost": "api.github.com"
+      "RemoteSha": "ac967fdf4f45a13f854f3107d71085b341f3a5e8",
+      "NeedsCompilation": "no",
+      "Author": "Marta Alcalde-Herraiz [aut] (ORCID: <https://orcid.org/0009-0002-4405-1814>), Kim Lopez-Guell [aut] (ORCID: <https://orcid.org/0000-0002-8462-8668>), Elin Rowlands [aut] (ORCID: <https://orcid.org/0009-0005-5166-0417>), Cecilia Campanile [aut, cre] (ORCID: <https://orcid.org/0009-0007-6629-4661>), Edward Burn [aut] (ORCID: <https://orcid.org/0000-0002-9286-1128>), Martí Català [aut] (ORCID: <https://orcid.org/0000-0003-3308-9905>)"
     },
     "PatientProfiles": {
       "Package": "PatientProfiles",

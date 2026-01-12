@@ -1,28 +1,31 @@
-# Characterisation
+# Background
 
-This Shiny app presents the results of analyses conducted on the following databases:
+This Shiny app presents database characterisation results produced as part of the [HERON UK](https://ukhealthdata.org/data-standards/common-data-models/rwe-network/) Year 2 onboarding process.
 
--   IDRIL_1 (Lancashire) - secondary care
+The aim is to provide a overview of data content, population coverage, and data quality across participating data partners mapped to the OMOP Common Data Model.
 
--   Barts Health- secondary care
+## Data Sources
 
--   UCLH from 2019 - secondary care
+The analyses were run on the following databases:
 
--   CPRD Aurum - primary care
+- IDRIL_1 (Lancashire) – secondary care  
+- Barts Health – secondary care  
+- UCLH (from 2019 onwards) – secondary care  
+- CPRD Aurum – primary care  
+- CPRD Gold – primary care  
+- DataLoch (University of Edinburgh) – secondary care  
+- LTHT (Leeds Teaching Hospitals Trust) – secondary care  
+- GOSH (Great Ormond Street Hospital) – secondary care  
 
--   DataLoch (University of Edinburgh) - secondary care
+## Analyses
 
--   LTHT (Leeds) - secondary care
-
--   GOSH - secondary care
-
-The analyses include:
+The app includes the following characterisation outputs:
 
 - **Snapshot**: Metadata extracted from the `cdm_source` table, using the output of [`summariseOmopSnapshot()`](https://ohdsi.github.io/OmopSketch/reference/summariseOmopSnapshot.html).
 - **Population Characteristics**: Summary of the demographics of the population in observation, generated using [**CohortConstructor**](https://ohdsi.github.io/CohortConstructor/) and [**CohortCharacteristics**](https://darwin-eu.github.io/CohortCharacteristics/).
-- **Person**: Summary of person table, from [`summarisePerson()`]()
+- **Person**: Summary of person table, from [`summarisePerson()`](https://ohdsi.github.io/OmopSketch/reference/summarisePerson.html)
+- **IMD**: Summary of available data about [IMD](https://www.gov.uk/government/collections/english-indices-of-deprivation)
 - **Observation Period**: Distribution and length of observation periods, based on [`summariseObservationPeriod()`](https://ohdsi.github.io/OmopSketch/reference/summariseObservationPeriod.html).
-- **Trends**: Temporal trends of individuals and records in observation, including changes in median age, proportion of females, and number of person-days, generated from [`summariseTrend()`](https://ohdsi.github.io/OmopSketch/reference/summariseTrend.html).
 - **Clinical Records**: Summary of clinical tables focused on vocabulary usage and quality checks, from [`summariseClinicalRecords()`](https://ohdsi.github.io/OmopSketch/reference/summariseClinicalRecords.html).
 
 The focus of the analysis is the study period 01/01/2012 - present.
