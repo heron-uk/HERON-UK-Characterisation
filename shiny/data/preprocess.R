@@ -7,8 +7,7 @@ resultList <- list(
   summarise_trend_event = list(result_type = "summarise_trend", type = "event"),
   summarise_person = list(result_type = "summarise_person"),
   summarise_characteristics = list(result_type = "summarise_characteristics"),
-  summarise_imd = list(result_type = "summarise_imd"),
-  summarise_log_file = list(result_type = "summarise_log_file")
+  summarise_imd = list(result_type = "summarise_imd")
 )
 
 source(file.path(getwd(), "functions.R"))
@@ -18,17 +17,24 @@ data <- prepareResult(result, resultList)
 
 set <- omopgenerics::settings(data[["summarise_observation_period"]])
 
+if ("name_observation_period" %in% colnames(set)) {
 set <- set |>
   dplyr::mutate("name_observation_period" = dplyr::coalesce(.data$name_observation_period, "Default"))
-
+} else {
+  set <- set |>
+    dplyr::mutate("name_observation_period" = "Default")
+}
 data[["summarise_observation_period"]] <- omopgenerics::newSummarisedResult(x = data[["summarise_observation_period"]], settings = set)
 
 
 set <- omopgenerics::settings(data[["summarise_trend_episode"]])
-
+if ("name_observation_period" %in% colnames(set)) {
 set <- set |>
   dplyr::mutate("name_observation_period" = dplyr::coalesce(.data$name_observation_period, "Default"))
-
+} else {
+  set <- set |>
+    dplyr::mutate("name_observation_period" = "Default")
+}
 data[["summarise_trend_episode"]] <- omopgenerics::newSummarisedResult(x = data[["summarise_trend_episode"]], settings = set)
 
 

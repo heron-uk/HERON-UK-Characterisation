@@ -11,7 +11,7 @@ The analyses were run on the following databases:
 - IDRIL_1 (Lancashire) – secondary care  
 - Barts Health – secondary care  
 - UCLH (from 2019 onwards) – secondary care  
-- CPRD Aurum – primary care  
+- HERON_CDM_202509 (CPRD Aurum + HES) – primary care linked to hospital data 
 - CPRD Gold – primary care  
 - DataLoch (University of Edinburgh) – secondary care  
 - LTHT (Leeds Teaching Hospitals Trust) – secondary care  
